@@ -9,7 +9,15 @@
 </head>
 
 <body>
-  Share
+  Share <span id="shareId"></span>
+
+
+  <script>
+    var currentLocation = window.location;
+    addrElements = currentLocation.pathname.split("/")
+    shareEl = document.getElementById("shareId")
+    shareEl.innerHTML = addrElements.at(-1)
+  </script>
 
 </body>
 
