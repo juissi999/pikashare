@@ -6,6 +6,7 @@ const ip = require('ip')
 const path = require('path')
 const fs = require('fs')
 
+const fileRouter = require('./files/routes')
 
 // get environmental variables
 require('dotenv').config()
@@ -26,6 +27,8 @@ const IP = ip.address()
 
 // start node express
 const app = express()
+
+app.use('/files', fileRouter)
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage

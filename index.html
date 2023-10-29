@@ -10,6 +10,30 @@
 
 <body>
   hello world
+
+  <form id="myform" onsubmit="submitFile(event)" enctype="multipart/form-data">
+    <input type="file" id="myFile" name="filename">
+    <input type="submit">
+  </form>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+
+      async function submitFile(event) {
+        event.preventDefault();
+        //event.stopPropagation();
+        const form = document.getElementById('myform');
+        const data = new FormData()
+        const response = await axios.post('/files', data)
+        console.log("test", response)
+      }
+
+    });
+  </script>
 </body>
+
+
+
 
 </html>
