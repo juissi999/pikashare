@@ -1,12 +1,22 @@
 // run: 'node ./server'
 // Specify port on .env
 
-// get environmental variables
-require('dotenv').config()
-
 const express = require('express')
 const ip = require('ip')
 const path = require('path')
+const fs = require('fs')
+
+
+// get environmental variables
+require('dotenv').config()
+
+// check filedir exists and create if not
+UPLOADDIR = process.env.UPLOADDIR
+console.log(UPLOADDIR)
+const uploadpath = path.resolve(UPLOADDIR)
+if (!fs.existsSync(uploadpath)) {
+  fs.mkdirSync(uploadpath, { recursive: true })
+}
 
 // use env-variable to decide listening port
 const PORT = process.env.PORT || 8080
