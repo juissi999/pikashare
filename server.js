@@ -29,7 +29,13 @@ const app = express()
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
-app.get('*', (req, res) => {
+app.get('/:id', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './', 'share.html'))
+})
+
+// return index for all the other routes which are not find so
+// that they will lead to mainpage
+app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, './', 'index.html'))
 })
 
