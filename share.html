@@ -11,12 +11,23 @@
 <body>
   Share <span id="shareId"></span>
 
-
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-    var currentLocation = window.location;
-    addrElements = currentLocation.pathname.split("/")
-    shareEl = document.getElementById("shareId")
-    shareEl.innerHTML = addrElements.at(-1)
+    window.addEventListener('load', async () => {
+      var currentLocation = window.location;
+      addrElements = currentLocation.pathname.split("/")
+      shareEl = document.getElementById("shareId")
+      shareId = addrElements.at(-1)
+      shareEl.innerHTML = addrElements.at(-1)
+
+      async function getShare(id) {
+        const response = await axios.get(`/files/${id}`)
+        console.log(response.status)
+        return response.data
+      }
+
+      await getShare(shareId)
+    });
   </script>
 
 </body>

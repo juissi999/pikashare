@@ -10,24 +10,56 @@
 
 <body>
   hello world
-
-  <form id="myform" onsubmit="submitFile(event)" enctype="multipart/form-data">
+  <br>
+  <div id="allShares"></div>
+  <br>
+  <form id="myform" enctype="multipart/form-data">
+    <input type="text" id="description" name="description">
     <input type="file" id="myFile" name="filename">
-    <input type="submit">
+    <input type="submit" id="formSubmit">
   </form>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
 
       async function submitFile(event) {
+
         event.preventDefault();
-        //event.stopPropagation();
+        // event.stopPropagation();
         const form = document.getElementById('myform');
         const data = new FormData()
         const response = await axios.post('/files', data)
         console.log("test", response)
+        const shares = await getAllShares()
+        updateShares(shares)
+        resetform()
+        // return False
       }
+
+      formSubmit = document.getElementById("formSubmit")
+      formSubmit.addEventListener("click", submitFile)
+
+      async function getAllShares() {
+        const response = await axios.get('/files/all')
+        return response.data
+      }
+
+      const updateShares = (shares) => {
+        sharesEl = document.getElementById("allShares")
+        sharesEl.innerHTML = ""
+        shares.map((share) => {
+          sharesEl.innerHTML += share
+          sharesEl.innerHTML += "<br>"
+        })
+      }
+
+      const resetform = () => {
+        document.getElementById("myform").reset();
+      }
+
+      const shares = await getAllShares()
+      updateShares(shares)
 
     });
   </script>

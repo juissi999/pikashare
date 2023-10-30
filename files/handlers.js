@@ -30,7 +30,18 @@ const storage = multer.diskStorage({
 })
 
 exports.getFiles = (request, response) => {
-  response.status(200).end()
+  element = shares.find((share) => share === request.params.shareid)
+
+  if (element) {
+    response.json({ files: [1, 2, 3] })
+    response.status(200).end()
+  } else {
+    response.status(404).end()
+  }
+  // console.log(element)
+
+  // response.json(shares)
+  // response.end()
   // File.find({ noteid: request.params.noteid })
   //   .then((files) => {
   //     response.json(files)
