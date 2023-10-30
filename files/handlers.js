@@ -2,6 +2,8 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 
+const { v4: uuidv4 } = require('uuid')
+
 // use webpack config file to get build directory
 //const wpconf = require('../../webpack.config')
 const builddir = '..' //wpconf.output.path
@@ -9,7 +11,7 @@ const builddir = '..' //wpconf.output.path
 const MAXSIZE = 5000000
 const UPLOADDIR = 'uploads/'
 
-files = ['test']
+shares = []
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,7 +30,7 @@ const storage = multer.diskStorage({
 })
 
 exports.getFiles = (request, response) => {
-  response.json(files)
+  response.status(200).end()
   // File.find({ noteid: request.params.noteid })
   //   .then((files) => {
   //     response.json(files)
@@ -37,6 +39,10 @@ exports.getFiles = (request, response) => {
   //     console.log(err.message)
   //     response.status(400).end()
   //   })
+}
+
+exports.getAllShares = (request, response) => {
+  response.json(shares)
 }
 
 exports.post = (request, response) => {
@@ -60,8 +66,14 @@ exports.post = (request, response) => {
     // add to database linker information
     //const fname = request.file.filename
     //const noteid = request.body.noteid
-    console.log('test')
-    return
+    const shareId = uuidv4()
+
+    shares.push(shareId)
+
+    response.json({
+      shareId: shareId
+    })
+    response.status(200).end()
 
     //   const file = new File({
     //     noteid: noteid,
