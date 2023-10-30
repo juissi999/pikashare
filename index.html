@@ -24,13 +24,16 @@
     window.addEventListener('load', async () => {
 
       async function submitFile(event) {
-
         event.preventDefault();
+
+        if (document.getElementById('description').value === "") {
+          return
+        }
         // event.stopPropagation();
         const form = document.getElementById('myform');
         const data = new FormData()
         const response = await axios.post('/files', data)
-        console.log("test", response)
+
         const shares = await getAllShares()
         updateShares(shares)
         resetform()
