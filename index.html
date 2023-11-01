@@ -15,7 +15,7 @@
   <br>
   <form id="myform" enctype="multipart/form-data">
     <input type="text" id="description" name="description">
-    <input type="file" id="myFile" name="filename">
+    <input type="file" id="files" name="filename" multiple>
     <input type="submit" id="formSubmit">
   </form>
 
@@ -25,13 +25,24 @@
 
       async function submitFile(event) {
         event.preventDefault();
+        const files = document.getElementById("files");
+        const description = document.getElementById('description')
 
-        if (document.getElementById('description').value === "") {
+        if (files.files.length === 0) {
           return
         }
-        // event.stopPropagation();
+
+        // if (description.value === "") {
+        //   return
+        // }
         const form = document.getElementById('myform');
         const data = new FormData()
+
+
+        for (let i = 0; i < files.files.length; i++) {
+          data.append("files", files.files[i]);
+        }
+
         const response = await axios.post('/files', data)
 
         const shares = await getAllShares()
