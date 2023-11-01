@@ -4,10 +4,6 @@ const fs = require('fs')
 
 const { v4: uuidv4 } = require('uuid')
 
-// use webpack config file to get build directory
-//const wpconf = require('../../webpack.config')
-const builddir = '..' //wpconf.output.path
-
 const MAXSIZE = 5000000
 const UPLOADDIR = 'uploads/'
 
@@ -16,10 +12,10 @@ shares = []
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // check if upload directory exists and if not, create it
-    const uploadpath = path.resolve(builddir, UPLOADDIR)
-    if (!fs.existsSync(uploadpath)) {
-      fs.mkdirSync(uploadpath, { recursive: true })
-    }
+    const uploadpath = path.resolve(UPLOADDIR)
+    // if (!fs.existsSync(uploadpath)) {
+    //   fs.mkdirSync(uploadpath, { recursive: true })
+    // }
 
     cb(null, uploadpath)
   },
@@ -30,26 +26,14 @@ const storage = multer.diskStorage({
 })
 
 exports.getFiles = (request, response) => {
-  element = shares.find((share) => share === request.params.shareid)
+  element = shares.find((share) => share.id === request.params.shareid)
 
   if (element) {
-    response.json({ files: [1, 2, 3] })
+    response.json(element)
     response.status(200).end()
   } else {
     response.status(404).end()
   }
-  // console.log(element)
-
-  // response.json(shares)
-  // response.end()
-  // File.find({ noteid: request.params.noteid })
-  //   .then((files) => {
-  //     response.json(files)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message)
-  //     response.status(400).end()
-  //   })
 }
 
 exports.getAllShares = (request, response) => {
@@ -64,7 +48,7 @@ exports.post = (request, response) => {
     }
   }
 
-  const upload = multer(opts).single('memFile')
+  const upload = multer(opts).any('files')
 
   upload(request, response, (err) => {
     if (err) {
@@ -75,36 +59,15 @@ exports.post = (request, response) => {
     }
 
     // add to database linker information
-    //const fname = request.file.filename
-    //const noteid = request.body.noteid
+    const filenames = request.files.map((file) => file.filename)
     const shareId = uuidv4()
 
-    shares.push(shareId)
+    shares.push({ id: shareId, files: filenames })
 
     response.json({
-      shareId: shareId
+      shareId
     })
     response.status(200).end()
-
-    //   const file = new File({
-    //     noteid: noteid,
-    //     filename: fname
-    //   })
-
-    //   file
-    //     .save()
-    //     .then(() => {
-    //       response.json({
-    //         filename: fname,
-    //         noteid: noteid,
-    //         uploaddir: UPLOADDIR
-    //       })
-    //       response.status(200).end()
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       response.status(400).end()
-    //     })
   })
 }
 
