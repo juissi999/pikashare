@@ -13,6 +13,9 @@
   <br>
   <br>
   Share <span id="shareId"></span>
+  <br>
+  Files:
+  <div id="files"></div>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
@@ -20,16 +23,33 @@
       var currentLocation = window.location;
       addrElements = currentLocation.pathname.split("/")
       shareEl = document.getElementById("shareId")
+      filesEl = document.getElementById("files")
       shareId = addrElements.at(-1)
       shareEl.innerHTML = addrElements.at(-1)
 
       async function getShare(id) {
         const response = await axios.get(`/files/${id}`)
         console.log(response.status)
-        return response.data
+
+        let data = null
+        if (response.status === 200) {
+          data = response.data
+        }
+
+        return data
       }
 
-      await getShare(shareId)
+      const data = await getShare(shareId)
+
+      if (data) {
+        filesEl.innerHTML = ""
+        data.files.map(file => {
+
+          filesEl.innerHTML += file
+          filesEl.innerHTML += "<br>"
+        })
+      }
+
     });
   </script>
 
