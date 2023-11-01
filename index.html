@@ -63,7 +63,7 @@
         sharesEl = document.getElementById("allShares")
         sharesEl.innerHTML = ""
         shares.map((share) => {
-          sharesEl.innerHTML += share
+          sharesEl.innerHTML += "<a href=" + share.id + ">" + share.id + "</a>"
           sharesEl.innerHTML += "<br>"
         })
       }
