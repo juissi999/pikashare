@@ -45,7 +45,7 @@
         filesEl.innerHTML = ""
         data.files.map(file => {
 
-          filesEl.innerHTML += file
+          filesEl.innerHTML += "<a href=/files/" + file + "> " + file + " </a>"
           filesEl.innerHTML += "<br>"
         })
       }

@@ -29,6 +29,7 @@ const IP = ip.address()
 const app = express()
 
 app.use('/shares', shareRouter)
+app.use('/files', express.static(UPLOADDIR))
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
