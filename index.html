@@ -43,7 +43,7 @@
           data.append("files", files.files[i]);
         }
 
-        const response = await axios.post('/files', data)
+        const response = await axios.post('/shares', data)
 
         const shares = await getAllShares()
         updateShares(shares)
@@ -55,7 +55,7 @@
       formSubmit.addEventListener("click", submitFile)
 
       async function getAllShares() {
-        const response = await axios.get('/files/all')
+        const response = await axios.get('/shares/all')
         return response.data
       }
 

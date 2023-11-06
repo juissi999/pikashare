@@ -6,14 +6,14 @@ const ip = require('ip')
 const path = require('path')
 const fs = require('fs')
 
-const fileRouter = require('./files/routes')
+const shareRouter = require('./shares/routes')
 
 // get environmental variables
 require('dotenv').config()
 
 // check filedir exists and create if not
 UPLOADDIR = process.env.UPLOADDIR
-console.log(UPLOADDIR)
+
 const uploadpath = path.resolve(UPLOADDIR)
 if (!fs.existsSync(uploadpath)) {
   fs.mkdirSync(uploadpath, { recursive: true })
@@ -28,7 +28,7 @@ const IP = ip.address()
 // start node express
 const app = express()
 
-app.use('/files', fileRouter)
+app.use('/shares', shareRouter)
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage

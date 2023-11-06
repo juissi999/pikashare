@@ -28,7 +28,7 @@
       shareEl.innerHTML = addrElements.at(-1)
 
       async function getShare(id) {
-        const response = await axios.get(`/files/${id}`)
+        const response = await axios.get(`/shares/${id}`)
         console.log(response.status)
 
         let data = null
