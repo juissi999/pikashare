@@ -21,7 +21,8 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const timestamp = Math.round(new Date().getTime() / 1000)
-    cb(null, timestamp.toString() + '_' + file.originalname)
+    filename_urlified = file.originalname.replace(/ /g, '_')
+    cb(null, timestamp.toString() + '_' + filename_urlified)
   }
 })
 
