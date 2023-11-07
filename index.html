@@ -9,13 +9,16 @@
 </head>
 
 <body>
-  hello world
+  pikashare
   <br>
+  <br>
+  <div>Active shares</div>
   <div id="allShares"></div>
   <br>
+  <div>New share</div>
   <form id="myform" enctype="multipart/form-data">
-    <input type="text" id="description" name="description">
     <input type="file" id="files" name="filename" multiple>
+    <br>
     <input type="submit" id="formSubmit">
   </form>
 
@@ -26,15 +29,11 @@
       async function submitFile(event) {
         event.preventDefault();
         const files = document.getElementById("files");
-        const description = document.getElementById('description')
 
         if (files.files.length === 0) {
           return
         }
 
-        // if (description.value === "") {
-        //   return
-        // }
         const form = document.getElementById('myform');
         const data = new FormData()
 
