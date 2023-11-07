@@ -21,6 +21,8 @@
     <br>
     <input type="submit" id="formSubmit">
   </form>
+  <br>
+  <div id="newShareAddress"></div>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
@@ -43,11 +45,11 @@
         }
 
         const response = await axios.post('/shares', data)
+        updateNewShareAddress(response.data.shareId)
 
         const shares = await getAllShares()
         updateShares(shares)
         resetform()
-        // return False
       }
 
       formSubmit = document.getElementById("formSubmit")
@@ -56,6 +58,12 @@
       async function getAllShares() {
         const response = await axios.get('/shares/all')
         return response.data
+      }
+
+      const updateNewShareAddress = (newShareId) => {
+        sharesEl = document.getElementById("newShareAddress")
+        sharesEl.innerHTML = "<a href=" + newShareId +
+          ">Congratulations! Your new share is available here</a>"
       }
 
       const updateShares = (shares) => {
