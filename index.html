@@ -61,9 +61,12 @@
       }
 
       const updateNewShareAddress = (newShareId) => {
+        const newShareAddress = window.location.href + newShareId
         sharesEl = document.getElementById("newShareAddress")
-        sharesEl.innerHTML = "<a href=" + newShareId +
-          ">Congratulations! Your new share is available here</a>"
+        sharesEl.innerHTML =
+          "Congratulations! Your new share is available at <br>"
+        sharesEl.innerHTML +=
+          `<a href="${newShareAddress}">${newShareAddress}</a>`
       }
 
       const updateShares = (shares) => {
