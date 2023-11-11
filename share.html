@@ -10,18 +10,18 @@
 
 <body>
   <a href="/">back to main page</a>
-
-  <br>
-  <br>
-  Share <span id="shareId"></span>
-  <br>
-  on location
-  <span id="shareAddr"></span>
-  <br>
-  <br>
-  Files:
-  <div id="files"></div>
-
+  <div id="shareContainer">
+    <br>
+    <br>
+    Share <span id="shareId"></span>
+    <br>
+    on location
+    <span id="shareAddr"></span>
+    <br>
+    <br>
+    Files:
+    <div id="files"></div>
+  </div>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
@@ -38,7 +38,11 @@
       shareAddrEl.innerHTML = `<a href="${shareAddr}">${shareAddr}</a>`
 
       async function getShare(id) {
-        const response = await axios.get(`/shares/${id}`)
+        try {
+          const response = await axios.get(`/shares/${id}`)
+        } catch (error) {
+          shareContainer.innerHTML = "<br><br>Share not found"
+        }
 
         let data = null
         if (response.status === 200) {
