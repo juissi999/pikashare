@@ -10,12 +10,18 @@
 
 <body>
   <a href="/">back to main page</a>
+
   <br>
   <br>
   Share <span id="shareId"></span>
   <br>
+  on location
+  <span id="shareAddr"></span>
+  <br>
+  <br>
   Files:
   <div id="files"></div>
+
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
@@ -23,13 +29,16 @@
       var currentLocation = window.location;
       addrElements = currentLocation.pathname.split("/")
       shareEl = document.getElementById("shareId")
+      shareAddrEl = document.getElementById("shareAddr")
       filesEl = document.getElementById("files")
       shareId = addrElements.at(-1)
       shareEl.innerHTML = addrElements.at(-1)
 
+      shareAddr = window.location.href
+      shareAddrEl.innerHTML = `<a href="${shareAddr}">${shareAddr}</a>`
+
       async function getShare(id) {
         const response = await axios.get(`/shares/${id}`)
-        console.log(response.status)
 
         let data = null
         if (response.status === 200) {
