@@ -37,19 +37,17 @@
       shareAddr = window.location.href
       shareAddrEl.innerHTML = `<a href="${shareAddr}">${shareAddr}</a>`
 
-      async function getShare(id) {
+      const getShare = async (id) => {
+
         try {
           const response = await axios.get(`/shares/${id}`)
+          if (response.status === 200) {
+            return response.data
+          }
         } catch (error) {
           shareContainer.innerHTML = "<br><br>Share not found"
+          return null
         }
-
-        let data = null
-        if (response.status === 200) {
-          data = response.data
-        }
-
-        return data
       }
 
       const data = await getShare(shareId)
