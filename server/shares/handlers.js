@@ -4,8 +4,13 @@ const fs = require('fs')
 
 const { v4: uuidv4 } = require('uuid')
 
-const MAXSIZE = 5000000
-const UPLOADDIR = 'uploads/'
+const MAXSIZE = 50000000
+
+// get environmental variables
+require('dotenv').config()
+
+// check filedir exists and create if not
+UPLOADDIR = process.env.UPLOADDIR
 
 shares = []
 
