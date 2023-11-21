@@ -1,6 +1,5 @@
 # database and files
-db.json
-uploads/
+data/
 
 # Logs
 logs

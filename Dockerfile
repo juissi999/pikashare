@@ -10,4 +10,7 @@ WORKDIR /home/app/
 
 RUN npm install
 
+RUN mkdir data
+RUN touch data/db.json
+
 CMD ["node", "/home/app/server/server.js"]

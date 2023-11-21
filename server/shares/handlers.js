@@ -6,16 +6,17 @@ const FileSync = require('lowdb/adapters/FileSync')
 const { v4: uuidv4 } = require('uuid')
 
 const MAXSIZE = 50000000
-const UPLOADDIR = 'server/uploads/'
+const UPLOADPATH = 'data/uploads/'
+const DBPATH = 'data/db.json'
 
 // Read or create db.json
-const adapter = new FileSync('server/db.json')
+const adapter = new FileSync(DBPATH)
 const db = low(adapter)
 db.defaults({ shares: [] }).write()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadpath = path.resolve(UPLOADDIR)
+    const uploadpath = path.resolve(UPLOADPATH)
     cb(null, uploadpath)
   },
   filename: (req, file, cb) => {

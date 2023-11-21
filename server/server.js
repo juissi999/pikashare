@@ -12,9 +12,9 @@ const shareRouter = require('./shares/routes')
 require('dotenv').config()
 
 // check filedir exists and create if not
-UPLOADDIR = 'server/uploads/'
+const UPLOADPATH = 'data/uploads/'
 
-const uploadpath = path.resolve(UPLOADDIR)
+const uploadpath = path.resolve(UPLOADPATH)
 if (!fs.existsSync(uploadpath)) {
   fs.mkdirSync(uploadpath, { recursive: true })
 }
@@ -29,7 +29,7 @@ const IP = ip.address()
 const app = express()
 
 app.use('/shares', shareRouter)
-app.use('/files', express.static(UPLOADDIR))
+app.use('/files', express.static(UPLOADPATH))
 
 // return index for all the other routes which are not find so
 // that they will lead to mainpage
