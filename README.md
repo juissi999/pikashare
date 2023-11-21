@@ -18,17 +18,17 @@ Images
 1. Install docker
 1. At source directory run
 
-`docker build -t pikashare:v1 .`
+`docker build -t pikashare .`
 
 ### Use the container
 
 Run the container
 
-`docker run -d pikashare:v1`
+`docker run -d pikashare`
 
 Run the container and map ports to host
 
-`docker run -d -p 80:8080 pikashare:v1`
+`docker run -d -p 80:8080 pikashare`
 
 Stop the container
 
@@ -40,4 +40,8 @@ Remove the container
 
 Remove the image
 
-`docker rmi image_hash`
+`docker rmi pikashare`
+
+Clean all docker containers, images and cache
+
+`docker system prune -f`
