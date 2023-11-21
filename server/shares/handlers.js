@@ -2,6 +2,8 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
 const { v4: uuidv4 } = require('uuid')
 
 const MAXSIZE = 50000000
@@ -9,10 +11,12 @@ const MAXSIZE = 50000000
 // get environmental variables
 require('dotenv').config()
 
-// check filedir exists and create if not
 UPLOADDIR = process.env.UPLOADDIR
 
-shares = []
+// Read or create db.json
+const adapter = new FileSync('server/db.json')
+const db = low(adapter)
+db.defaults({ shares: [] }).write()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -32,7 +36,7 @@ const storage = multer.diskStorage({
 })
 
 exports.getFiles = (request, response) => {
-  element = shares.find((share) => share.id === request.params.shareid)
+  element = db.get('shares').find({ id: request.params.shareid }).value()
 
   if (element) {
     response.json(element)
@@ -43,6 +47,7 @@ exports.getFiles = (request, response) => {
 }
 
 exports.getAllShares = (request, response) => {
+  shares = db.get('shares')
   response.json(shares)
 }
 
@@ -68,7 +73,7 @@ exports.post = (request, response) => {
     const filenames = request.files.map((file) => file.filename)
     const shareId = uuidv4()
 
-    shares.push({ id: shareId, files: filenames })
+    db.get('shares').push({ id: shareId, files: filenames }).write()
 
     response.json({
       shareId
