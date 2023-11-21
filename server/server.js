@@ -12,7 +12,7 @@ const shareRouter = require('./shares/routes')
 require('dotenv').config()
 
 // check filedir exists and create if not
-UPLOADDIR = process.env.UPLOADDIR
+UPLOADDIR = 'server/uploads/'
 
 const uploadpath = path.resolve(UPLOADDIR)
 if (!fs.existsSync(uploadpath)) {

@@ -1,3 +1,7 @@
+# database and files
+db.json
+uploads/
+
 # Logs
 logs
 *.log

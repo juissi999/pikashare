@@ -1,17 +1,12 @@
 const multer = require('multer')
 const path = require('path')
-const fs = require('fs')
 
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const { v4: uuidv4 } = require('uuid')
 
 const MAXSIZE = 50000000
-
-// get environmental variables
-require('dotenv').config()
-
-UPLOADDIR = process.env.UPLOADDIR
+const UPLOADDIR = 'server/uploads/'
 
 // Read or create db.json
 const adapter = new FileSync('server/db.json')
@@ -20,12 +15,7 @@ db.defaults({ shares: [] }).write()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // check if upload directory exists and if not, create it
     const uploadpath = path.resolve(UPLOADDIR)
-    // if (!fs.existsSync(uploadpath)) {
-    //   fs.mkdirSync(uploadpath, { recursive: true })
-    // }
-
     cb(null, uploadpath)
   },
   filename: (req, file, cb) => {
