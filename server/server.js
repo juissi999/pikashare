@@ -16,9 +16,6 @@ if (!fs.existsSync(uploadpath)) {
 
 const shareRouter = require('./shares/routes')
 
-// get environmental variables
-require('dotenv').config()
-
 // use env-variable to decide listening port
 const PORT = process.env.PORT || 8080
 
