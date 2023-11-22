@@ -1,5 +1,6 @@
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
@@ -16,13 +17,16 @@ db.defaults({ shares: [] }).write()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadpath = path.resolve(UPLOADPATH)
+    const shareId = req.headers['_shareId']
+    const uploadpath = path.resolve(UPLOADPATH, shareId)
+    if (!fs.existsSync(uploadpath)) {
+      fs.mkdirSync(uploadpath, { recursive: true })
+    }
     cb(null, uploadpath)
   },
   filename: (req, file, cb) => {
-    const timestamp = Math.round(new Date().getTime() / 1000)
     filename_urlified = file.originalname.replace(/ /g, '_')
-    cb(null, timestamp.toString() + '_' + filename_urlified)
+    cb(null, filename_urlified)
   }
 })
 
@@ -43,12 +47,16 @@ exports.getAllShares = (request, response) => {
 }
 
 exports.post = (request, response) => {
+  const shareId = uuidv4()
+
   const opts = {
     storage: storage,
     limits: {
       fileSize: MAXSIZE
     }
   }
+
+  request.headers['_shareId'] = shareId
 
   const upload = multer(opts).any('files')
 
@@ -62,7 +70,6 @@ exports.post = (request, response) => {
 
     // add to database linker information
     const filenames = request.files.map((file) => file.filename)
-    const shareId = uuidv4()
 
     db.get('shares').push({ id: shareId, files: filenames }).write()
 
