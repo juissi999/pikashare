@@ -6,11 +6,6 @@ const ip = require('ip')
 const path = require('path')
 const fs = require('fs')
 
-const shareRouter = require('./shares/routes')
-
-// get environmental variables
-require('dotenv').config()
-
 // check filedir exists and create if not
 const UPLOADPATH = 'data/uploads/'
 
@@ -18,6 +13,11 @@ const uploadpath = path.resolve(UPLOADPATH)
 if (!fs.existsSync(uploadpath)) {
   fs.mkdirSync(uploadpath, { recursive: true })
 }
+
+const shareRouter = require('./shares/routes')
+
+// get environmental variables
+require('dotenv').config()
 
 // use env-variable to decide listening port
 const PORT = process.env.PORT || 8080
