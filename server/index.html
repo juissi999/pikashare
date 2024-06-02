@@ -24,31 +24,37 @@
   <br>
   <div id="newShareAddress"></div>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
     window.addEventListener('load', async () => {
 
       async function submitFile(event) {
         event.preventDefault();
-        const files = document.getElementById("files");
+        var files = document.getElementById("files");
 
         if (files.files.length === 0) {
           return
         }
 
-        const form = document.getElementById('myform');
-        const data = new FormData()
+        var form = document.getElementById('myform');
+        var data = new FormData()
 
 
         for (let i = 0; i < files.files.length; i++) {
           data.append("files", files.files[i]);
         }
 
-        const response = await axios.post('/shares', data)
-        updateNewShareAddress(response.data.shareId)
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload = async () => {
+          if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
+            // Request finished.
+            updateNewShareAddress(JSON.parse(xhttp.response).shareId)
+          }
+          await getAllShares()
+        };
 
-        const shares = await getAllShares()
-        updateShares(shares)
+        xhttp.open("POST", "/shares");
+        xhttp.send(data);
+
         resetform()
       }
 
@@ -56,12 +62,18 @@
       formSubmit.addEventListener("click", submitFile)
 
       async function getAllShares() {
-        const response = await axios.get('/shares/all')
-        return response.data
+        var xhttp = new XMLHttpRequest()
+        xhttp.onload = function() {
+          // What to do when the response is ready
+          updateShares(xhttp.response)
+          resetform()
+        }
+        xhttp.open("GET", "/shares/all")
+        xhttp.send()
       }
 
-      const updateNewShareAddress = (newShareId) => {
-        const newShareAddress = window.location.href + newShareId
+      var updateNewShareAddress = (newShareId) => {
+        var newShareAddress = window.location.href + newShareId
         sharesEl = document.getElementById("newShareAddress")
         sharesEl.innerHTML =
           "Congratulations! Your new share is available at <br>"
@@ -69,7 +81,8 @@
           `<a href="${newShareAddress}">${newShareAddress}</a>`
       }
 
-      const updateShares = (shares) => {
+      var updateShares = (shares) => {
+        shares = JSON.parse(shares)
         sharesEl = document.getElementById("allShares")
         sharesEl.innerHTML = ""
         shares.map((share) => {
@@ -78,12 +91,12 @@
         })
       }
 
-      const resetform = () => {
+      var resetform = () => {
         document.getElementById("myform").reset();
       }
 
-      const shares = await getAllShares()
-      updateShares(shares)
+      await getAllShares()
+      // updateShares(shares)
 
     });
   </script>
